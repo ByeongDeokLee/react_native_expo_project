@@ -1,67 +1,66 @@
 import React, { useState } from "react";
 import {
-  View,
-  Text,
   TextInput,
-  Switch,
+  View,
   StyleSheet,
+  Text,
   TouchableHighlight,
   Alert,
 } from "react-native";
 
-export default function LoginScreen({ navigation }: any) {
-  const [ID, setID] = useState("");
+export default function SignlnScreen({}) {
+  const [id, setId] = useState("");
   const [password, setPassword] = useState("");
-  const [isEnabled, setIsEnabled] = useState(false);
-  const toggleSwitch = () => setIsEnabled((prev) => !prev);
+  const [confirm, setConfirm] = useState("");
 
   const handleLogin = () => {
-    if (!ID.trim()) {
+    console.log(!id.trim());
+    console.log(confirm);
+    console.log(password);
+    if (!id.trim()) {
       Alert.alert("아이디를 입력하세요.");
       return;
     }
 
-    if (password.length < 4) {
+    if (password.length < 4 || confirm.length < 4) {
       Alert.alert("비밀번호는 4자 이상이어야 합니다.");
       return;
     }
 
-    navigation.navigate("Home", { username: ID });
-  };
-
-  const handleSignln = () => {
-    navigation.navigate("SingIn");
+    if (password && !confirm) {
+      Alert.alert("비밀번호가 맞지 않습니다.");
+      return;
+    }
   };
 
   return (
     <View style={styles.container}>
       <TextInput
         style={styles.textinput}
-        placeholder="Username"
-        value={ID}
-        onChangeText={setID}
-      />
+        placeholder="ID를 입력하세요"
+        onChangeText={setId}
+        value={id}
+      ></TextInput>
       <TextInput
         style={styles.textinput}
-        placeholder="Password"
+        placeholder="PW를 입력하세요"
         secureTextEntry
-        value={password}
         onChangeText={setPassword}
-      />
-      <View style={styles.switchView}>
-        <Text>자동 로그인</Text>
-        <Switch value={isEnabled} onValueChange={toggleSwitch} />
-      </View>
+        value={password}
+      ></TextInput>
+      <TextInput
+        style={styles.textinput}
+        placeholder="PW를 한번더 입력하세요"
+        secureTextEntry
+        onChangeText={setConfirm}
+        value={confirm}
+      ></TextInput>
       <TouchableHighlight onPress={handleLogin} style={styles.btn}>
-        <Text style={styles.btnText}>Log In</Text>
-      </TouchableHighlight>
-      <TouchableHighlight onPress={handleSignln} style={styles.btn}>
         <Text style={styles.btnText}>회원가입</Text>
       </TouchableHighlight>
     </View>
   );
 }
-
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 24 },
   textinput: { borderBottomWidth: 1, marginBottom: 15, height: 40 },
