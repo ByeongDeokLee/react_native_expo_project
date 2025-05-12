@@ -8,7 +8,7 @@ import {
   Alert,
 } from "react-native";
 
-export default function SignlnScreen({}) {
+export default function SignlnScreen({ navigation }: any) {
   const [id, setId] = useState("");
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
@@ -31,6 +31,9 @@ export default function SignlnScreen({}) {
       Alert.alert("비밀번호가 맞지 않습니다.");
       return;
     }
+
+    Alert.alert("회원가입 성공!", `환영합니다, ${id}님!`);
+    navigation.goBack(); // 로그인 화면으로 되돌아감
   };
 
   return (

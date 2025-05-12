@@ -1,3 +1,4 @@
+import { useUser } from "../context/UserContext";
 import React, { useState } from "react";
 import {
   View,
@@ -14,6 +15,7 @@ export default function LoginScreen({ navigation }: any) {
   const [password, setPassword] = useState("");
   const [isEnabled, setIsEnabled] = useState(false);
   const toggleSwitch = () => setIsEnabled((prev) => !prev);
+  const { login } = useUser();
 
   const handleLogin = () => {
     if (!ID.trim()) {
@@ -25,8 +27,9 @@ export default function LoginScreen({ navigation }: any) {
       Alert.alert("비밀번호는 4자 이상이어야 합니다.");
       return;
     }
-
-    navigation.navigate("Home", { username: ID });
+    login(ID);
+    navigation.navigate("Home");
+    // navigation.navigate("Home", { username: ID });
   };
 
   const handleSignln = () => {

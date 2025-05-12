@@ -1,27 +1,38 @@
-/* import { registerRootComponent } from "expo";
-import App from "./App";
-
-registerRootComponent(App);
- */
-
 import React from "react";
-import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import LoginScreen from "../../screens/LoginScreen";
 import HomeScreen from "../../screens/HomeScreen";
 import SignInScreen from "../../screens/SignInScreen";
+import { UserProvider, useUser } from "../../context/UserContext";
 
 const Stack = createNativeStackNavigator();
 
+function AppInner() {
+  const { loading, user } = useUser();
+
+  if (loading) return null; // 또는 로딩 스피너
+
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="Login"
+        component={LoginScreen}
+        options={{ headerShown: !user }}
+      />
+      <Stack.Screen
+        name="Home"
+        component={HomeScreen}
+        options={{ headerShown: !!user }}
+      />
+      <Stack.Screen name="SignIn" component={SignInScreen} />
+    </Stack.Navigator>
+  );
+}
+
 export default function App() {
   return (
-    // <h1>안녕하세여</h1>
-    // <NavigationContainer>
-    <Stack.Navigator initialRouteName="Login">
-      <Stack.Screen name="Login" component={LoginScreen} />
-      <Stack.Screen name="Home" component={HomeScreen} />
-      <Stack.Screen name="SingIn" component={SignInScreen} />
-    </Stack.Navigator>
-    // </NavigationContainer>
+    <UserProvider>
+      <AppInner />
+    </UserProvider>
   );
 }
